@@ -4,7 +4,6 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm }) => {
   return (
     <div className="glass-overlay" onClick={onClose}>
       <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
-        {/* HEADER */}
         <div className="confirm-header">
           <div className="danger-icon">!</div>
           <h3>Delete Student</h3>
@@ -13,7 +12,6 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm }) => {
           </button>
         </div>
 
-        {/* BODY */}
         <div className="confirm-body">
           <p>
             This action <strong>cannot be undone</strong>.
@@ -21,7 +19,6 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm }) => {
           <p>Are you sure you want to delete this student?</p>
         </div>
 
-        {/* FOOTER */}
         <div className="confirm-actions">
           <button className="btn-outline" onClick={onClose}>
             Cancel
@@ -31,7 +28,6 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm }) => {
           </button>
         </div>
 
-        {/* ===== STYLES ===== */}
         <style>{`
           :root {
             --danger: #dc2626;

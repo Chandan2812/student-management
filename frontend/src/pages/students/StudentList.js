@@ -19,7 +19,7 @@ const StudentList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [refresh, setRefresh] = useState(0); // ✅ refetch trigger
+  const [refresh, setRefresh] = useState(0);
 
   const [deleteId, setDeleteId] = useState(null);
 
@@ -29,7 +29,6 @@ const StudentList = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewStudent, setViewStudent] = useState(null);
 
-  // ================= FETCH STUDENTS =================
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -55,9 +54,8 @@ const StudentList = () => {
     };
 
     fetchStudents();
-  }, [search, page, refresh]); // ✅ only dependencies
+  }, [search, page, refresh]);
 
-  // ================= CREATE / UPDATE =================
   const handleSubmitStudent = async (data) => {
     try {
       const token = localStorage.getItem("token");
@@ -73,13 +71,12 @@ const StudentList = () => {
       }
 
       setIsModalOpen(false);
-      setRefresh((prev) => prev + 1); // ✅ refetch
+      setRefresh((prev) => prev + 1);
     } catch {
       alert("Operation failed");
     }
   };
 
-  // ================= DELETE =================
   const handleDeleteStudent = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -89,13 +86,12 @@ const StudentList = () => {
       });
 
       setDeleteId(null);
-      setRefresh((prev) => prev + 1); // ✅ refetch
+      setRefresh((prev) => prev + 1);
     } catch {
       setError("Failed to delete student");
     }
   };
 
-  // ================= VIEW =================
   const handleViewStudent = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -277,7 +273,6 @@ const StudentList = () => {
           )}
         </div>
 
-        {/* ===== PAGINATION ===== */}
         <div className="pagination">
           <button disabled={page === 1} onClick={() => setPage(page - 1)}>
             Prev

@@ -86,7 +86,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* ===== CSS (SAME FILE) ===== */}
       <style>{`
         :root {
           --primary: #6c63ff;

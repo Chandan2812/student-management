@@ -17,14 +17,11 @@ const Navbar = () => {
 
   return (
     <>
-      {/* ===== TOP NAVBAR ===== */}
       <nav className="navbar">
-        {/* LEFT */}
         <div className="nav-left">
           <span className="brand">🎓 Student Portal</span>
         </div>
 
-        {/* CENTER */}
         <div className="nav-center">
           <Link className={isActive("/") ? "active" : ""} to="/">
             Dashboard
@@ -37,29 +34,24 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* RIGHT */}
         <div className="nav-right">
           <span className="user-email">{user?.email}</span>
           <button onClick={handleLogout}>Logout</button>
         </div>
 
-        {/* MOBILE TOGGLE */}
         <div className="hamburger" onClick={() => setMenuOpen(true)}>
           ☰
         </div>
       </nav>
 
-      {/* ===== MOBILE SIDEBAR ===== */}
       {menuOpen && (
         <div className="overlay" onClick={() => setMenuOpen(false)}>
           <aside className="sidebar" onClick={(e) => e.stopPropagation()}>
-            {/* SIDEBAR HEADER */}
             <div className="sidebar-header">
               <span>🎓 Student Portal</span>
               <button onClick={() => setMenuOpen(false)}>✕</button>
             </div>
 
-            {/* NAV LINKS */}
             <div className="sidebar-links">
               <Link
                 className={isActive("/") ? "active" : ""}
@@ -78,7 +70,6 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* USER SECTION */}
             <div className="sidebar-user">
               <p>{user?.email}</p>
               <button onClick={handleLogout}>Logout</button>
@@ -87,7 +78,6 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* ===== CSS (SAME FILE) ===== */}
       <style>{`
         :root {
           --primary: #6c63ff;

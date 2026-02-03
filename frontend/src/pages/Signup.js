@@ -89,7 +89,6 @@ const Signup = () => {
         </div>
       </div>
 
-      {/* ===== CSS IN SAME FILE ===== */}
       <style>{`
         :root {
           --primary: #6c63ff;

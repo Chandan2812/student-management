@@ -9,7 +9,6 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="dashboard-container">
-        {/* HEADER */}
         <div className="dashboard-header">
           <h2>Dashboard</h2>
           <p>
@@ -17,7 +16,6 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* INFO CARDS */}
         <div className="card-grid">
           <div className="info-card">
             <h4>Email</h4>
@@ -33,7 +31,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ===== CSS (SAME FILE) ===== */}
       <style>{`
         :root {
           --primary: #6c63ff;

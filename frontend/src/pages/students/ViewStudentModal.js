@@ -10,7 +10,6 @@ const ViewStudentModal = ({ isOpen, onClose, student }) => {
   return (
     <div className="glass-overlay" onClick={onClose}>
       <div className="student-modal" onClick={(e) => e.stopPropagation()}>
-        {/* HEADER */}
         <div className="modal-top">
           <div className="avatar">{initials}</div>
 
@@ -30,7 +29,6 @@ const ViewStudentModal = ({ isOpen, onClose, student }) => {
           </button>
         </div>
 
-        {/* BODY */}
         <div className="modal-content">
           <div className="info-row">
             <span>Email</span>
@@ -48,7 +46,6 @@ const ViewStudentModal = ({ isOpen, onClose, student }) => {
           </div>
         </div>
 
-        {/* FOOTER */}
         <div className="modal-footer">
           <button className="close-btn" onClick={onClose}>
             Close
@@ -56,7 +53,6 @@ const ViewStudentModal = ({ isOpen, onClose, student }) => {
         </div>
       </div>
 
-      {/* ===== STYLES ===== */}
       <style>{`
         :root {
           --primary: #6c63ff;

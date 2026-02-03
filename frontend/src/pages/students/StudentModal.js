@@ -54,7 +54,6 @@ const StudentModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   return (
     <div className="glass-overlay" onClick={onClose}>
       <div className="student-form-modal" onClick={(e) => e.stopPropagation()}>
-        {/* HEADER */}
         <div className="modal-header">
           <h3>{initialData ? "Edit Student" : "Create Student"}</h3>
           <button className="close-x" onClick={onClose}>
@@ -62,7 +61,6 @@ const StudentModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           </button>
         </div>
 
-        {/* FORM */}
         <form onSubmit={handleSubmit} className="modal-body">
           <div className="field">
             <input
@@ -108,7 +106,6 @@ const StudentModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             <label>Course</label>
           </div>
 
-          {/* STATUS */}
           <div className="status-group">
             <span>Status</span>
             <div className="status-toggle">
@@ -129,7 +126,6 @@ const StudentModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </div>
           </div>
 
-          {/* FOOTER */}
           <div className="modal-footer">
             <button
               type="button"
@@ -147,7 +143,6 @@ const StudentModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         </form>
       </div>
 
-      {/* ===== STYLES ===== */}
       <style>{`
         :root {
           --primary: #6c63ff;
