@@ -27,36 +27,36 @@ const StudentList = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewStudent, setViewStudent] = useState(null);
 
-  const fetchStudents = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const token = localStorage.getItem("token");
-
-      const res = await axios.get(API_URL, {
-        params: {
-          search,
-          page,
-          limit: 5,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setStudents(res.data.students);
-      setTotalPages(res.data.totalPages);
-    } catch (err) {
-      setError("Failed to fetch students");
-    } finally {
-      setLoading(false);
-    }
-  }, [search, page]);
-
   useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const token = localStorage.getItem("token");
+
+        const res = await axios.get(API_URL, {
+          params: {
+            search,
+            page,
+            limit: 5,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setStudents(res.data.students);
+        setTotalPages(res.data.totalPages);
+      } catch (err) {
+        setError("Failed to fetch students");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchStudents();
-  }, [fetchStudents]);
+  }, [search, page]);
 
   const handleSubmitStudent = async (data) => {
     try {
