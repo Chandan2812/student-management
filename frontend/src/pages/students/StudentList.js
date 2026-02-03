@@ -4,6 +4,8 @@ import Navbar from "../../components/Navbar";
 import { useAuth } from "../../context/AuthContext";
 import StudentModal from "./StudentModal";
 import ViewStudentModal from "./ViewStudentModal";
+import "./StudentList.css";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 const API_URL = `http://localhost:8000/api/students`;
 
@@ -16,6 +18,8 @@ const StudentList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [deleteId, setDeleteId] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -77,22 +81,18 @@ const StudentList = () => {
     }
   };
 
-  const handleDeleteStudent = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this student?",
-    );
-    if (!confirmDelete) return;
-
+  const handleDeleteStudent = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`${API_URL}/${id}`, {
+      await axios.delete(`${API_URL}/${deleteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      setDeleteId(null);
       fetchStudents();
     } catch (error) {
-      alert("Failed to delete student");
+      setError("Failed to delete student");
     }
   };
 
@@ -116,109 +116,196 @@ const StudentList = () => {
   return (
     <>
       <Navbar />
-      <div style={{ padding: "20px" }}>
-        <h2>Students</h2>
 
-        {/* Search */}
-        <input
-          type="text"
-          placeholder="Search by name or email"
-          value={search}
-          onChange={(e) => {
-            setPage(1);
-            setSearch(e.target.value);
-          }}
-          style={{ marginBottom: "10px" }}
-        />
+      <div className="student-page">
+        <div className="student-header">
+          <h2>Students</h2>
 
-        {/* Admin only: Create button */}
-        {user.role === "admin" && (
-          <div style={{ marginBottom: "10px" }}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by name or email"
+            value={search}
+            onChange={(e) => {
+              setPage(1);
+              setSearch(e.target.value);
+            }}
+          />
+
+          {user.role === "admin" && (
             <button
+              className="btn btn-primary"
               onClick={() => {
                 setSelectedStudent(null);
                 setIsModalOpen(true);
               }}
             >
-              Create Student
+              + Create Student
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
-        {/* Error */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p className="error-text">{error}</p>}
 
-        {/* Table */}
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <table border="1" cellPadding="8" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Age</th>
-                <th>Course</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+        <div className="table-card desktop-only">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
 
-            <tbody>
-              {students.length === 0 ? (
-                <tr>
-                  <td colSpan="5">No students found</td>
-                </tr>
-              ) : (
-                students.map((student) => (
-                  <tr key={student._id}>
-                    <td>{student.name}</td>
-                    <td>{student.email}</td>
-                    <td>{student.age}</td>
-                    <td>{student.course}</td>
-                    <td>{student.status}</td>
-                    <td>
-                      <button onClick={() => handleViewStudent(student._id)}>
-                        View
+                <tbody>
+                  {students.length === 0 ? (
+                    <tr>
+                      <td colSpan="6">No students found</td>
+                    </tr>
+                  ) : (
+                    students.map((student) => (
+                      <tr key={student._id}>
+                        <td>{student.name}</td>
+                        <td>{student.email}</td>
+                        <td>{student.age}</td>
+                        <td>{student.course}</td>
+                        <td>
+                          <span
+                            className={`status ${
+                              student.status === "Active"
+                                ? "active"
+                                : "inactive"
+                            }`}
+                          >
+                            {student.status}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="action-buttons">
+                            <button
+                              className="btn btn-outline btn-sm"
+                              onClick={() => handleViewStudent(student._id)}
+                            >
+                              View
+                            </button>
+
+                            {user.role === "admin" && (
+                              <>
+                                <button
+                                  className="btn btn-primary btn-sm"
+                                  onClick={() => {
+                                    setSelectedStudent(student);
+                                    setIsModalOpen(true);
+                                  }}
+                                >
+                                  Edit
+                                </button>
+
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => setDeleteId(student._id)}
+                                >
+                                  Delete
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* ===== MOBILE CARDS ===== */}
+        <div className="mobile-cards">
+          {loading ? (
+            <p>Loading...</p>
+          ) : students.length === 0 ? (
+            <p>No students found</p>
+          ) : (
+            students.map((student) => (
+              <div key={student._id} className="student-card">
+                <div className="card-header">
+                  <h4>{student.name}</h4>
+                  <span
+                    className={`status ${
+                      student.status === "Active" ? "active" : "inactive"
+                    }`}
+                  >
+                    {student.status}
+                  </span>
+                </div>
+
+                <p>
+                  <strong>Email:</strong> {student.email}
+                </p>
+                <p>
+                  <strong>Age:</strong> {student.age}
+                </p>
+                <p>
+                  <strong>Course:</strong> {student.course}
+                </p>
+
+                <div className="card-actions">
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => handleViewStudent(student._id)}
+                  >
+                    View
+                  </button>
+
+                  {user.role === "admin" && (
+                    <>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => {
+                          setSelectedStudent(student);
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        Edit
                       </button>
 
-                      {user.role === "admin" && (
-                        <>
-                          <button
-                            onClick={() => {
-                              setSelectedStudent(student);
-                              setIsModalOpen(true);
-                            }}
-                          >
-                            Edit
-                          </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteStudent(student._id)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
 
-                          <button
-                            onClick={() => handleDeleteStudent(student._id)}
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        )}
-
-        {/* Pagination */}
-        <div style={{ marginTop: "10px" }}>
-          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+        <div className="pagination">
+          <button
+            className="btn btn-outline btn-sm"
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
             Prev
           </button>
 
-          <span style={{ margin: "0 10px" }}>
+          <span>
             Page {page} of {totalPages}
           </span>
 
           <button
+            className="btn btn-outline btn-sm"
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
           >
@@ -226,16 +313,24 @@ const StudentList = () => {
           </button>
         </div>
       </div>
+
       <StudentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmitStudent}
         initialData={selectedStudent}
       />
+
       <ViewStudentModal
         isOpen={isViewOpen}
         onClose={() => setIsViewOpen(false)}
         student={viewStudent}
+      />
+
+      <ConfirmDeleteModal
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={handleDeleteStudent}
       />
     </>
   );
