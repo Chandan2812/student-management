@@ -175,30 +175,105 @@ const StudentList = () => {
                       <td>{s.course}</td>
                       <td>{s.status}</td>
                       <td>
-                        <button onClick={() => handleViewStudent(s._id)}>
-                          View
-                        </button>
-                        {user.role === "admin" && (
-                          <>
-                            <button
-                              onClick={() => {
-                                setSelectedStudent(s);
-                                setIsModalOpen(true);
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button onClick={() => setDeleteId(s._id)}>
-                              Delete
-                            </button>
-                          </>
-                        )}
+                        <div className="action-buttons">
+                          <button
+                            className="btn btn-outline btn-sm"
+                            onClick={() => handleViewStudent(s._id)}
+                          >
+                            View
+                          </button>
+
+                          {user.role === "admin" && (
+                            <>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={() => {
+                                  setSelectedStudent(s);
+                                  setIsModalOpen(true);
+                                }}
+                              >
+                                Edit
+                              </button>
+
+                              <button
+                                className="btn btn-danger btn-sm"
+                                onClick={() => setDeleteId(s._id)}
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))
                 )}
               </tbody>
             </table>
+          )}
+        </div>
+
+        {/* ===== MOBILE CARDS ===== */}
+        <div className="mobile-cards">
+          {loading ? (
+            <p>Loading...</p>
+          ) : students.length === 0 ? (
+            <p>No students found</p>
+          ) : (
+            students.map((student) => (
+              <div key={student._id} className="student-card">
+                <div className="card-header">
+                  <h4>{student.name}</h4>
+                  <span
+                    className={`status ${
+                      student.status === "Active" ? "active" : "inactive"
+                    }`}
+                  >
+                    {student.status}
+                  </span>
+                </div>
+
+                <p>
+                  <strong>Email:</strong> {student.email}
+                </p>
+                <p>
+                  <strong>Age:</strong> {student.age}
+                </p>
+                <p>
+                  <strong>Course:</strong> {student.course}
+                </p>
+
+                <div className="card-actions">
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => handleViewStudent(student._id)}
+                  >
+                    View
+                  </button>
+
+                  {user.role === "admin" && (
+                    <>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => {
+                          setSelectedStudent(student);
+                          setIsModalOpen(true);
+                        }}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => setDeleteId(student._id)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))
           )}
         </div>
 
