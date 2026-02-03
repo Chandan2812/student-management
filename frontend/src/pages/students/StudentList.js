@@ -27,7 +27,7 @@ const StudentList = () => {
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [viewStudent, setViewStudent] = useState(null);
 
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -52,11 +52,11 @@ const StudentList = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, page]);
 
   useEffect(() => {
     fetchStudents();
-  }, [page, search]);
+  }, [fetchStudents]);
 
   const handleSubmitStudent = async (data) => {
     try {
