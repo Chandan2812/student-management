@@ -7,7 +7,7 @@ import ViewStudentModal from "./ViewStudentModal";
 import "./StudentList.css";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
-const API_URL = `http://localhost:8000/api/students`;
+const API_URL = `${process.env.REACT_APP_BASE_URL}/api/students`;
 
 const StudentList = () => {
   const { user } = useAuth();
